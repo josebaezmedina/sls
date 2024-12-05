@@ -1,10 +1,11 @@
 (ns sls.core
-  (:require [clojure.java.io :as io]
-            [clojure.pprint :as pp]
-            [clj-commons.humanize :as ch]
-            [clojure.term.colors :as tc]
-            [clojure.string :as cs]
-            [table.core :as tbl])
+  (:require
+   [clojure.java.io :as io]
+   [clojure.pprint :as pp]
+   [clj-commons.humanize :as ch]
+   [clojure.term.colors :as tc]
+   [clojure.string :as cs]
+   [table.core :as tbl])
   (:gen-class))
 
 (defn format-name [name]
@@ -44,22 +45,16 @@
 (defn strip-flags [args-set]
   (first (disj (disj args-set "-t") "-a")))
 
-
-
 (defn print-all [argsx]
-  (def args-set (into #{} argsx))
-  (def show-hidden (if (some #(cs/includes? % "-a") argsx)  true false))
-  (def show-as-table? (if (some #(cs/includes? % "-t") argsx)  true false))
-  (def rest-args (strip-flags args-set))
-  (def path (if (nil? rest-args) "." rest-args))
-
-  (def files-to-print (get-files-per-path path show-hidden))
-
-  (if show-as-table?
-    (show-as-table files-to-print)
-    (show-as-list files-to-print)))
-
-
+  (let [args-set (into #{} argsx)
+        show-hidden (if (some #(cs/includes? % "-a") argsx)  true false)
+        show-as-table? (if (some #(cs/includes? % "-t") argsx)  true false)
+        rest-args (strip-flags args-set)
+        path (if (nil? rest-args) "." rest-args)
+        files-to-print (get-files-per-path path show-hidden)]
+    (if show-as-table?
+      (show-as-table files-to-print)
+      (show-as-list files-to-print))))
 
 (defn -main
   "slow ls command alternative"
