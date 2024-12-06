@@ -8,7 +8,7 @@ echo "generating app image for this machine"
 echo ""
 
 echo "cleaning app directory"
-rm -rf  $srcdir/bin/sls_app
+rm -rf  $srcdir/bin/sls
 
 echo "generating uberjar"
 lein uberjar
@@ -36,7 +36,7 @@ then
    mkdir -p ~/bin
 fi;
 
-ln -sf ${srcdir}/bin/sls_app/bin/sls ~/bin/sls
+ln -sf ${srcdir}/bin/sls/bin/sls ~/bin/sls
 
 echo "link created"
 
