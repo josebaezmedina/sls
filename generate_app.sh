@@ -1,24 +1,27 @@
 #!/usr/bin/env bash
+
+ver=$( head -n1 project.clj | cut -d " " -f3 | tr -d '"' )
+
+
 srcdir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )
 echo "generating app image for this machine"
 echo ""
 
 echo "cleaning app directory"
-rm -rf  ${srcdir}/bin/sls_app
+rm -rf  $srcdir/bin/sls_app
 
 echo "generating uberjar"
 lein uberjar
 
 echo "generating app image with jpackage"
 
-
-echo "${srcdir}"
+# echo "${srcdir}"
 
 jpackage \
---input ${srcdir}/target/uberjar/ \
---dest ${srcdir}/bin \
---name "sls_app" \
---main-jar ${srcdir}/target/uberjar/sls-0.1.0-SNAPSHOT-standalone.jar \
+--input $srcdir/target/uberjar/ \
+--dest $srcdir/bin \
+--name "sls" \
+--main-jar $srcdir/target/uberjar/sls-$ver-standalone.jar \
 --main-class sls.core \
 --type app-image
 
@@ -33,7 +36,7 @@ then
    mkdir -p ~/bin
 fi;
 
-ln -sf ${srcdir}/bin/sls_app/bin/sls_app ~/bin/sls
+ln -sf ${srcdir}/bin/sls_app/bin/sls ~/bin/sls
 
 echo "link created"
 
