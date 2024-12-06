@@ -60,5 +60,4 @@
   "slow ls command alternative"
   [& args]
   (print-all args)
-
   (System/exit 0))
